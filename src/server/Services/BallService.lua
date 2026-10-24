@@ -1,5 +1,4 @@
 --!strict
-local Players = game:GetService("Players")
 local RunService = game:GetService("RunService")
 
 local BallService = {}
@@ -99,7 +98,13 @@ function BallService:TryAcquire(player)
   self.Ball.Anchored = true
   self.Ball.CanCollide = false
   self.Ball.CanTouch = false
-  self.Ball.CFrame = CFrame.new(root.Position + root.CFrame.LookVector * self.Config.PossessionOffset
+  local facing = Vector3.new(root.CFrame.LookVector.X, 0, root.CFrame.LookVector.Z)
+  if facing.Magnitude < 0.01 then
+    facing = Vector3.new(0, 0, -1)
+  else
+    facing = facing.Unit
+  end
+  self.Ball.CFrame = CFrame.new(root.Position + facing * self.Config.PossessionOffset
     + Vector3.new(0, -self.Config.PossessionDropOffset, 0))
   return true
 end
@@ -192,10 +197,5 @@ function BallService:Reset()
     ball:SetNetworkOwner(nil)
   end)
 end
-
-Players.PlayerRemoving:Connect(function(player)
-  -- The active owner is checked by Heartbeat; clean up per-player rate-limit data.
-  -- This listener does not depend on a specific BallService instance.
-end)
 
 return BallService
