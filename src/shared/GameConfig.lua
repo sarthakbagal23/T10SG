@@ -17,7 +17,7 @@ local GameConfig = {
   BallSpawnHeight = 1.7,
   PossessionDistance = 9,
   PossessionOffset = 3.3,
-  PossessionDropOffset = 2.1,
+  PossessionDropOffset = 1.25,
   RequestCooldownSeconds = 0.12,
   KickCooldownSeconds = 0.4,
 
