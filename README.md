@@ -1,38 +1,51 @@
 # T10SG
 
-T10SG is an arcade-style Roblox soccer project built with Luau, Roblox Studio, and Rojo.
+T10SG is an arcade-style Roblox soccer game built with Luau, Roblox Studio, and Rojo.
 
-## Current goal
+## First playable slice
 
-Build a small, testable vertical slice before expanding into full team matches, goalkeeper mechanics, progression, cosmetics, and matchmaking.
+- Generated soccer pitch, field markings, goal frames, and spawn points
+- Auto-balanced Blue and Orange teams
+- Server-validated possession, charged shots, and passes
+- Goal validation, scoring, a three-minute match clock, and ball resets
+- A basic scoreboard, match messages, and shot-charge bar
 
-### First playable slice
-- Procedurally generated soccer pitch, goals, and team spawn points
-- Balanced Blue and Orange teams
-- Server-validated ball possession, charged shots, and passes
-- Goal detection, score tracking, and a match timer
-- Simple in-game HUD and control hints
+## Run it locally
 
-## Development workflow
+1. Install [Rokit](https://rojo.space/docs/v7/getting-started/installation/) and make sure its command is available in a new terminal.
+2. Clone this repository and enter the folder:
+   ```powershell
+   git clone https://github.com/sarthakbagal23/T10SG.git
+   cd T10SG
+   ```
+3. Install the pinned Rojo tool version and start the sync server:
+   ```powershell
+   rokit install
+   rojo serve
+   ```
+4. Open a place in Roblox Studio. Click the Rojo plugin and connect to the local server shown in your terminal.
+5. Check the Explorer: the project maps code into `ReplicatedStorage`, `ServerScriptService`, and `StarterPlayerScripts`. Use **Test → Start** with at least two players for the multiplayer pass.
 
-This repository uses [Rojo](https://rojo.space/) to sync source files into Roblox Studio. The Studio plugin needs a running Rojo CLI server on your computer.
+Rojo needs both sides: its command-line server running on your computer and its plugin inside Studio. See the [official Rojo setup guide](https://rojo.space/docs/v7/getting-started/new-game/).
 
-1. Install the Rojo CLI with [Rokit](https://rojo.space/docs/v7/getting-started/installation/).
-2. Clone this repository.
-3. From the project folder, run `rokit install` and then `rojo serve`.
-4. In Roblox Studio, open the Rojo plugin and connect to the local server.
-5. Use **Test → Start** with at least two players to test team assignment and multiplayer behavior.
+## Controls
 
-## Initial controls
+- **E** — request possession when close to the loose ball
+- **Hold left mouse, then release** — charge and shoot
+- **Right mouse** — pass toward the camera's horizontal aim direction
 
-- **E** — request possession when close to the ball
-- **Hold left mouse button** — charge a shot; release to shoot
-- **Right mouse button** — pass toward the camera's horizontal aim direction
+The control scheme is intentionally small for the first test. Tackling, advanced dribbling, goalkeeper roles, mobile controls, cosmetics, and progression are later milestones.
 
-Controls are a starting point and will be tuned after play-testing.
+## Project layout
 
-## Project status
+- `default.project.json` — maps source files into Roblox services
+- `rokit.toml` — pins the Rojo CLI version
+- `src/shared/GameConfig.lua` — shared gameplay tuning
+- `src/server/Main.server.lua` — wires remotes and server systems
+- `src/server/Services/` — arena generation, teams, ball actions, and match scoring
+- `src/client/T10Client.client.lua` — HUD and input handling
+- `docs/` — game direction, roadmap, and manual test plan
 
-The initial prototype is a starting point, not a finished or fully tested game. Test changes in Studio before publishing. Gameplay-critical actions are checked on the server, but the prototype still needs multiplayer, latency, and exploit-resistance testing.
+## Status and important limitation
 
-See [docs/GAME_DESIGN.md](docs/GAME_DESIGN.md) and [docs/ROADMAP.md](docs/ROADMAP.md) for the design and next milestones.
+The source scaffold has been committed, but it has **not yet been run inside Roblox Studio in this environment**. Treat it as the first prototype, not a tested release. First check Studio's **Output** window, then follow [the manual test plan](docs/TEST_PLAN.md). Server-side validation is included for core requests, but the game still needs realistic multiplayer/latency tests and a security review before publishing.
